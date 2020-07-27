@@ -16,7 +16,6 @@ int main()
 
 	Vector2 vectorOne(1.0f, 2.0f);
 	Vector2 vectorTwo(5.0f, 2.0f);
-	Vector2 vectorSum();
 
 	Vector3 vec31(1.0f, 1.0f, 1.0f);
 	Vector3 vec32(2.0f, 2.0f, 2.0f);

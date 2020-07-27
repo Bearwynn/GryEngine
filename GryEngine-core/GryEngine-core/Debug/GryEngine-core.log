@@ -1,2 +1,4 @@
-﻿  main.cpp
-d:\game development\gryengine\gryengine-core\gryengine-core\main.cpp(31): error C2659: '=': function as left operand
+﻿LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\GryEngine - GitHub\GryEngine\GryEngine-core\Debug\vc120.pdb'; linking object as if no debug info
+  GryEngine-core.vcxproj -> D:\GryEngine - GitHub\GryEngine\GryEngine-core\Debug\GryEngine-core.exe
