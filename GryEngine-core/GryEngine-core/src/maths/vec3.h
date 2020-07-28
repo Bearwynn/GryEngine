@@ -23,10 +23,10 @@ namespace GryEngine {
 			Vector3& divide(const Vector3& other);
 
 			// -- operator overloads --
-			friend Vector3& operator+(Vector3& left, const Vector3& right);
-			friend Vector3& operator-(Vector3& left, const Vector3& right);
-			friend Vector3& operator*(Vector3& left, const Vector3& right);
-			friend Vector3& operator/(Vector3& left, const Vector3& right);
+			friend Vector3& operator+(Vector3 left, const Vector3& right);
+			friend Vector3& operator-(Vector3 left, const Vector3& right);
+			friend Vector3& operator*(Vector3 left, const Vector3& right);
+			friend Vector3& operator/(Vector3 left, const Vector3& right);
 
 			bool operator==(const Vector3& other);
 			bool operator!=(const Vector3& other);

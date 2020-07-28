@@ -101,6 +101,7 @@ namespace GryEngine {
 			return glfwWindowShouldClose(m_Window) == 1;
 		}
 
+		// -- input checking --
 		bool Window::isKeyPressed(unsigned int keycode) const
 		{
 			//TODO: log this

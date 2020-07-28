@@ -14,19 +14,19 @@ int main()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	Vector2 vectorOne(1.0f, 2.0f);
-	Vector2 vectorTwo(5.0f, 2.0f);
+	bool drawSquare = true;
+	bool debugMouse = false;
+	bool debugInput = false;
+	bool debugVector = false;
+	bool debugMatrix = false;
 
-	Vector3 vec31(1.0f, 1.0f, 1.0f);
-	Vector3 vec32(2.0f, 2.0f, 2.0f);
-
-	while (!window.Closed())
+	if (debugVector)
 	{
-		window.Clear();
+		Vector2 vectorOne(1.0f, 2.0f);
+		Vector2 vectorTwo(5.0f, 2.0f);
 
-		bool drawSquare = true;
-		bool debugMouse = false;
-		bool debugInput = false;
+		Vector3 vec31(1.0f, 1.0f, 1.0f);
+		Vector3 vec32(2.0f, 2.0f, 2.0f);
 
 		std::cout << vectorOne << std::endl;
 		std::cout << vectorTwo << std::endl;
@@ -36,9 +36,25 @@ int main()
 
 		std::cout << vec31 << std::endl;
 		std::cout << vec32 << std::endl;
-		vectorOne.add(vectorTwo);
-		std::cout << vectorOne << std::endl;
-		std::cout << vectorTwo << std::endl;
+		vec31.add(vec32);
+		std::cout << vec31 << std::endl;
+		std::cout << vec32 << std::endl;
+	}
+
+	if (debugMatrix)
+	{
+		Mat4x4 position = Mat4x4::translation(Vector3(2.0f, 3.0f, 4.0f));
+		position *= Mat4x4::identity();
+
+		Vector4 column = position.column[3];
+		std::cout << column << std::endl;
+		std::cout << "Start Address Value of: " << position.elements[12] << " | " << &position.elements[12] << std::endl;
+		std::cout << "Start Address Value of: " << column << " | " << &position.column[3] << std::endl;
+	}
+	
+	while (!window.Closed())
+	{
+		window.Clear();
 
 		if (debugMouse)
 		{

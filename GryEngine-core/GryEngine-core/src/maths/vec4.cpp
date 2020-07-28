@@ -78,22 +78,22 @@ namespace GryEngine {
 		 
 		#pragma region Operator Overloads
 		// -- Operator Overloads --
-		Vector4& operator+(Vector4& left, const Vector4& right)
+		Vector4& operator+(Vector4 left, const Vector4& right)
 		{
 			return left.add(right);
 		}
 
-		Vector4& operator-(Vector4& left, const Vector4& right)
+		Vector4& operator-(Vector4 left, const Vector4& right)
 		{
 			return left.subtract(right);
 		}
 
-		Vector4& operator*(Vector4& left, const Vector4& right)
+		Vector4& operator*(Vector4 left, const Vector4& right)
 		{
 			return left.multiply(right);
 		}
 
-		Vector4& operator/(Vector4& left, const Vector4& right)
+		Vector4& operator/(Vector4 left, const Vector4& right)
 		{
 			return left.divide(right);
 		}
