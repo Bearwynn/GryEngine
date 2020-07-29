@@ -25,6 +25,7 @@ This project is ongoing, and it's primary purpose is C++ / Game Engine Design pr
 - [ ] Create a renderer
 - [ ] Texture setup/importing
 - [ ] Model setup/importing
+- [ ] Setup Game Loop
 - [ ] Setup UI system
 - [ ] Setup Audio system
 - [ ] Setup Physics
