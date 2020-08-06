@@ -10,6 +10,7 @@ So I decided to start again and go for the full OpenGL works.
 - Visual Studio 2017
 
 ## Utilizing:
+- C
 - C++
 - GLFW
 - GLEW
