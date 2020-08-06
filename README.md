@@ -2,6 +2,8 @@
 
 A C++ game engine developed as a hobby :)
 This project is ongoing, and it's primary purpose is C++ / Game Engine Design practice.
+Originally started as a tinker project off of github using SDL2 to try and render some 2D objects,
+but decided that if I'm going to work on an engine I may as well commit (that's a github joke lol).
 
 ## Created in:
 - Visual Studio 2017
