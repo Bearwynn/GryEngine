@@ -129,17 +129,17 @@ namespace GryEngine {
 			float y = axis.y;
 			float z = axis.z;
 
-			result.elements[0 + 0 * 4] = x * omc + cosine;
+			result.elements[0 + 0 * 4] = x * x * omc + cosine;
 			result.elements[1 + 0 * 4] = y * x * omc + z * sine;
 			result.elements[2 + 0 * 4] = x * z * omc - z * sine;
 
 			result.elements[0 + 1 * 4] = x * y * omc - z * sine;
-			result.elements[1 + 1 * 4] = y * omc + cosine;
+			result.elements[1 + 1 * 4] = y * y * omc + cosine;
 			result.elements[2 + 1 * 4] = y * z * omc + x * sine;
 
 			result.elements[0 + 2 * 4] = x * z * omc + y * sine;
 			result.elements[1 + 2 * 4] = y * z * omc - x * sine;
-			result.elements[2 + 2 * 4] = z * omc + cosine;
+			result.elements[2 + 2 * 4] = z * z * omc + cosine;
 
 			return result;
 		}

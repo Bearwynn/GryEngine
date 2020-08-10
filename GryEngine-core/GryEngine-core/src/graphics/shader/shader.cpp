@@ -108,6 +108,42 @@ namespace GryEngine {
 			return 1;
 		}
 
+		GLint Shader::GetUniformLocation(const GLchar* name)
+		{
+			return glGetUniformLocation(m_ShaderID, name);
+		}
+
+		void Shader::SetUniform1float(const GLchar* name, float value)
+		{
+			glUniform1f(GetUniformLocation(name), value);
+		}
+
+		void Shader::SetUniform1int(const GLchar* name, int value)
+		{
+			glUniform1i(GetUniformLocation(name), value);
+		}
+
+		void Shader::SetUniform2float(const GLchar* name, const Maths::Vector2& vector)
+		{
+			glUniform2f(GetUniformLocation(name), vector.x, vector.y);
+		}
+
+		void Shader::SetUniform3float(const GLchar* name, const Maths::Vector3& vector)
+		{
+			glUniform3f(GetUniformLocation(name), vector.x, vector.y, vector.z);
+		}
+
+		void Shader::SetUniform4float(const GLchar* name, const Maths::Vector4& vector)
+		{
+			glUniform4f(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+		}
+
+		void Shader::SetUniformMat4x4(const GLchar* name, const Maths::Mat4x4& matrix)
+		{
+			glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, matrix.elements);
+		}
+
+
 		void Shader::Enable() const
 		{
 			glUseProgram(m_ShaderID);

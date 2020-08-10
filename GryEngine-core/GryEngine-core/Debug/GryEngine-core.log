@@ -1,2 +1,3 @@
-﻿  shader.cpp
+﻿  main.cpp
+d:\gryengine - github\gryengine\gryengine-core\gryengine-core\src\maths\maths.h(14): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   GryEngine-core.vcxproj -> D:\GryEngine - GitHub\GryEngine\GryEngine-core\Debug\GryEngine-core.exe
