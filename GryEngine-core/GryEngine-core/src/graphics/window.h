@@ -32,12 +32,12 @@ namespace GryEngine {
 			void Update();
 			bool Closed() const;
 
-			inline int getWidth() const { return m_Width; }
-			inline int getHeight() const { return m_Height; }
+			inline int GetWidth() const { return m_Width; }
+			inline int GetHeight() const { return m_Height; }
 
-			bool isKeyPressed(unsigned int keycode) const;
-			bool isMousePressed(unsigned int button) const;
-			void getMousePosition(double& x, double& y) const; //eventually will return a Vector2D
+			bool IsKeyPressed(unsigned int keycode) const;
+			bool IsMousePressed(unsigned int button) const;
+			void GetMousePosition(double& x, double& y) const; //eventually will return a Vector2D
 		private:
 			bool Init();
 			friend void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

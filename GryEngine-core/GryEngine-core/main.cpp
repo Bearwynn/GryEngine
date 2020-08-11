@@ -1,6 +1,7 @@
 #include "src/graphics/window.h"
 #include "src/maths/maths.h"
 #include "src/utils/file_utils.h"
+
 #include "src/graphics/shader/shader.h"
 #include "src/graphics/buffers/buffer.h"
 #include "src/graphics/buffers/indexBuffer.h"
@@ -12,13 +13,16 @@ int main()
 	using namespace Graphics;
 	using namespace Maths;
 
-	bool debugMouse			= true;
-	bool debugInput			= true;
-	bool debugUseShader		= true;
-	bool debugTestBuffer	= false;
+	bool debugMouse			= false;
+	bool debugInput			= false;
+	bool debugUseShader		= false;
+	bool debugTestBuffer	= true;
 
-	Window window("GryEngine", 640, 480);	//create a new window
-	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);	//define the default colour for GL window
+	int horizontalWindowSize	= 640;
+	int verticalWindowSize		= 480;
+
+	Window window("GryEngine", horizontalWindowSize, verticalWindowSize);	//create a new window
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);									//define the default colour for GL window
 
 
 	if (debugUseShader)
@@ -58,15 +62,36 @@ int main()
 
 		shader.SetUniform2float("light_position", Vector2(8.0f, 4.5f));
 		shader.SetUniform1float("light_intensity", 2.0f);
-		shader.SetUniform4float("fragColour", Vector4(1.0f, 0.3f, 1.0f, 1.0f));
+		shader.SetUniform4float("frag_colour", Vector4(1.0f, 0.3f, 1.0f, 1.0f));
 
 		while (!window.Closed())
 		{
+			if (debugMouse)
+			{
+				double x, y;
+				window.GetMousePosition(x, y);
+				std::cout << "Mouse Position: " << x << ", " << y << std::endl;
+			}
+
+			if (debugInput)
+			{
+				if (window.IsMousePressed(GLFW_MOUSE_BUTTON_LEFT))
+				{
+					std::cout << "LEFT MOUSE PRESSED!" << std::endl;
+				}
+
+				if (window.IsMousePressed(GLFW_MOUSE_BUTTON_RIGHT))
+				{
+					std::cout << "RIGHT MOUSE PRESSED!" << std::endl;
+				}
+			}
+
+
 			window.Clear();
 
 			double x, y;
-			window.getMousePosition(x, y);
-			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / 640.0f), (float)(9.0f - y * 9.0f / 480.0f)));
+			window.GetMousePosition(x, y);
+			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 
 			window.Update();
@@ -88,11 +113,28 @@ int main()
 			2, 3, 0
 		};
 
-		VertexArray vao;
-		Buffer* vbo = new Buffer(vertices, 4 * 3, 3);
-		IndexBuffer ibo(indices, 6);
+		VertexArray vao;								//new vertex array declared
+		Buffer* vbo = new Buffer(vertices, 4 * 3, 3);	//new vertex buffer using vertices, with 4*3 elements, consisting of 3 elements per component
+		IndexBuffer ibo(indices, 6);					//new indexBuffer using the indices generated, with 6 elements
 
-		vao.AddBuffer(vbo, 0);
+		vao.AddBuffer(vbo, 0);							//add the vertex buffer object to the vertex array buffer
+
+		// -- setup orthographic matrix
+		Mat4x4 ortho = Mat4x4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
+
+		// -- setup shader --
+		Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+		shader.Enable();
+		shader.SetUniformMat4x4("projection_matrix", ortho);
+		shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(4, 3, 0)));
+
+		// -- setup light --
+		Vector2 position	= Vector2(4.0f, 1.5f);
+		float intensity		= 1.0f;
+		Vector4 colour		= Vector4(0.2f, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform2float("light_position", position);
+		shader.SetUniform1float("light_intensity", intensity);
+		shader.SetUniform4float("frag_colour", colour);
 
 		while (!window.Closed())
 		{
@@ -101,18 +143,18 @@ int main()
 			if (debugMouse)
 			{
 				double x, y;
-				window.getMousePosition(x, y);
+				window.GetMousePosition(x, y);
 				std::cout << "Mouse Position: " << x << ", " << y << std::endl;
 			}
 
 			if (debugInput)
 			{
-				if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT))
+				if (window.IsMousePressed(GLFW_MOUSE_BUTTON_LEFT))
 				{
 					std::cout << "LEFT MOUSE PRESSED!" << std::endl;
 				}
 
-				if (window.isMousePressed(GLFW_MOUSE_BUTTON_RIGHT))
+				if (window.IsMousePressed(GLFW_MOUSE_BUTTON_RIGHT))
 				{
 					std::cout << "RIGHT MOUSE PRESSED!" << std::endl;
 				}
@@ -120,17 +162,25 @@ int main()
 
 			if (debugTestBuffer)
 			{
+				// -- make light follow mouse --
+				double x;
+				double y;
+				window.GetMousePosition(x, y);
+				shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
+
+				// -- draw object to the screen --
 				vao.Bind();
 				ibo.Bind();
-
-				glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_SHORT, 0);
-
+				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
 				ibo.Unbind();
 				vao.Unbind();
 			}
 
 			window.Update();
 		}
+
+		//cleanup memory
+		delete vbo;
 	}
 
 	return 0;

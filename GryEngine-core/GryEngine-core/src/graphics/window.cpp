@@ -92,6 +92,12 @@ namespace GryEngine {
 		 
 		void Window::Update()
 		{
+			// -- error check --
+			GLenum error = glGetError();
+			if (error != GL_NO_ERROR)
+				std::cout << "OpenGL Error: " << error << std::endl;
+
+
 			glfwPollEvents();			//polling for events (eg input callbacks)
 			glfwSwapBuffers(m_Window);
 		}
@@ -102,7 +108,7 @@ namespace GryEngine {
 		}
 
 		// -- input checking --
-		bool Window::isKeyPressed(unsigned int keycode) const
+		bool Window::IsKeyPressed(unsigned int keycode) const
 		{
 			//TODO: log this
 			if (keycode >= MAX_KEYS)
@@ -111,7 +117,7 @@ namespace GryEngine {
 			return m_Keys[keycode];
 		}
 
-		bool Window::isMousePressed(unsigned int button) const
+		bool Window::IsMousePressed(unsigned int button) const
 		{
 			//TODO: log this
 			if (button >= MAX_MOUSE_BUTTONS)
@@ -120,7 +126,7 @@ namespace GryEngine {
 			return m_MouseButtons[button];
 		}
 
-		void Window::getMousePosition(double& x, double& y) const
+		void Window::GetMousePosition(double& x, double& y) const
 		{
 			x = m_MouseX;
 			y = m_MouseY;

@@ -25,7 +25,7 @@ namespace GryEngine {
 			buffer->Bind();
 
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, buffer->getComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(index, buffer->GetComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
 
 			buffer->Unbind();
 			Unbind();

@@ -17,7 +17,7 @@ namespace GryEngine {
 			void Bind() const;
 			void Unbind() const;
 
-			inline GLuint getComponentCount() const { return m_ComponentCount; };
+			inline GLuint GetComponentCount() const { return m_ComponentCount; };
 		};
 
 	}
