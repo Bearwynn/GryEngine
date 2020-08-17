@@ -25,7 +25,7 @@ So I decided to start again and go for the full OpenGL works.
 - [x] Create Matrix class (transformation matrices, perspective matrices, etc)
 - [x] Setup shader class
 - [x] VAO & VBO setup
-- [ ] Create a renderer
+- [x] Create a renderer
 - [ ] Texture setup/importing
 - [ ] Model setup/importing
 - [ ] Setup Game Loop
