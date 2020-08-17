@@ -24,6 +24,7 @@ So I decided to start again and go for the full OpenGL works.
 - [x] Create Vector classes (Vector2, Vector3, Vector4)
 - [x] Create Matrix class (transformation matrices, perspective matrices, etc)
 - [x] Setup shader class
+- [x] VAO & VBO setup
 - [ ] Create a renderer
 - [ ] Texture setup/importing
 - [ ] Model setup/importing
