@@ -92,19 +92,24 @@ namespace GryEngine {
 		 
 		void Window::Update()
 		{
-			// -- error check --
-			GLenum error = glGetError();
-			if (error != GL_NO_ERROR)
-				std::cout << "OpenGL Error: " << error << std::endl;
+			CheckError("Window::Update()");
 
-
-			glfwPollEvents();			//polling for events (eg input callbacks)
+			glfwPollEvents();			//polling for events (e.g. input callbacks)
 			glfwSwapBuffers(m_Window);
 		}
 
 		bool Window::Closed() const
 		{
 			return glfwWindowShouldClose(m_Window) == 1;
+		}
+
+		// -- error checking --
+		void Window::CheckError(const char* errorTag)
+		{
+			// -- error check --
+			GLenum error = glGetError();
+			if (error != GL_NO_ERROR)
+				std::cout << errorTag << " | OpenGL Error: " << error << std::endl;
 		}
 
 		// -- input checking --

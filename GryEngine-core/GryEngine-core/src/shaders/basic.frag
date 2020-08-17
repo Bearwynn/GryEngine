@@ -2,14 +2,18 @@
 
 layout (location = 0) out vec4 colour;
 
-uniform vec4 frag_colour;
 uniform vec2 light_position;
-uniform float light_intensity;
+uniform vec4 frag_colour;
 
-in vec4 pos;
+in DATA
+{
+	in vec4 position;
+	in vec4 colour;
+} fs_in;
 
 void main()
 {
-	float intensity = 1.0f / length(pos.xy - light_position) * light_intensity;
-	colour = frag_colour * intensity;
+	float intensity = 1.0 / length(fs_in.position.xy - light_position);
+	//colour = frag_colour * intensity;
+	colour = fs_in.colour * intensity;
 }

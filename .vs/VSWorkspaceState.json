@@ -5,8 +5,12 @@
     "\\GryEngine-core\\Dependencies",
     "\\GryEngine-core\\GryEngine-core",
     "\\GryEngine-core\\GryEngine-core\\src",
-    "\\GryEngine-core\\GryEngine-core\\src\\maths"
+    "\\GryEngine-core\\GryEngine-core\\src\\graphics",
+    "\\GryEngine-core\\GryEngine-core\\src\\graphics\\buffers",
+    "\\GryEngine-core\\GryEngine-core\\src\\graphics\\shader",
+    "\\GryEngine-core\\GryEngine-core\\src\\shaders",
+    "\\GryEngine-core\\GryEngine-core\\src\\utils"
   ],
-  "SelectedNode": "\\GryEngine-core\\GryEngine-core.sln",
+  "SelectedNode": "\\GryEngine-core\\GryEngine-core\\src\\graphics\\window.cpp",
   "PreviewInSolutionExplorer": false
 }

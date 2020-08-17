@@ -32,6 +32,9 @@ namespace GryEngine {
 			void Update();
 			bool Closed() const;
 
+			//function to be called whenever error checking is required
+			void CheckError(const char* errorTag);
+
 			inline int GetWidth() const { return m_Width; }
 			inline int GetHeight() const { return m_Height; }
 

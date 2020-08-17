@@ -61,7 +61,6 @@ int main()
 		shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(4.0f, 3.0f, 0)));
 
 		shader.SetUniform2float("light_position", Vector2(8.0f, 4.5f));
-		shader.SetUniform1float("light_intensity", 2.0f);
 		shader.SetUniform4float("frag_colour", Vector4(1.0f, 0.3f, 1.0f, 1.0f));
 
 		while (!window.Closed())
@@ -91,7 +90,8 @@ int main()
 
 			double x, y;
 			window.GetMousePosition(x, y);
-			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
+			Vector2 lightPosition = Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize));
+			shader.SetUniform2float("light_position", lightPosition);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 
 			window.Update();
@@ -113,11 +113,70 @@ int main()
 			2, 3, 0
 		};
 
-		VertexArray vao;								//new vertex array declared
-		Buffer* vbo = new Buffer(vertices, 4 * 3, 3);	//new vertex buffer using vertices, with 4*3 elements, consisting of 3 elements per component
-		IndexBuffer ibo(indices, 6);					//new indexBuffer using the indices generated, with 6 elements
+		GLfloat red[] = 
+		{
+			1, 0, 0, 1,
+			1, 0, 0, 1,
+			1, 0, 0, 1,
+			1, 0, 0, 1
+		};
 
-		vao.AddBuffer(vbo, 0);							//add the vertex buffer object to the vertex array buffer
+		GLfloat green[] =
+		{
+			0, 1, 0, 1,
+			0, 1, 0, 1,
+			0, 1, 0, 1,
+			0, 1, 0, 1
+		};
+
+		GLfloat blue[] =
+		{
+			0, 0, 1, 1,
+			0, 0, 1, 1,
+			0, 0, 1, 1,
+			0, 0, 1, 1
+		};
+
+
+		GLfloat yellow[] =
+		{
+			1, 1, 0, 1,
+			1, 1, 0, 1,
+			1, 1, 0, 1,
+			1, 1, 0, 1,
+		};
+
+		GLfloat white[] =
+		{
+			1, 1, 1, 1,
+			1, 1, 1, 1,
+			1, 1, 1, 1,
+			1, 1, 1, 1,
+		};
+
+		GLfloat Rainbow[] =
+		{
+			1, 0, 0, 1,
+			0, 1, 0, 1,
+			0, 0, 1, 1,
+			1, 1, 0, 1,
+		};
+
+		VertexArray sprite1, sprite2, sprite3, sprite4, sprite5;	//new vertex array declared
+		IndexBuffer ibo(indices, 6);								//new indexBuffer using the indices generated, with 6 elements
+
+		sprite1.AddBuffer(new Buffer(vertices, 4 * 3, 3), 0);		//add the vertex buffer object to a new vertex array buffer 0
+		sprite1.AddBuffer(new Buffer(red, 4 * 4, 4), 1);			//add the coloursA array to a new colours buffer 1
+		sprite2.AddBuffer(new Buffer(vertices, 4 * 3, 3), 0);		//add the vertex buffer object to a new vertex array buffer 0
+		sprite2.AddBuffer(new Buffer(green, 4 * 4, 4), 1);			//add the coloursB array to a new colours buffer 1
+		sprite3.AddBuffer(new Buffer(vertices, 4 * 3, 3), 0);		//add the vertex buffer object to a new vertex array buffer 0
+		sprite3.AddBuffer(new Buffer(blue, 4 * 4, 4), 1);			//add the coloursB array to a new colours buffer 1
+		sprite4.AddBuffer(new Buffer(vertices, 4 * 3, 3), 0);		//add the vertex buffer object to a new vertex array buffer 0
+		sprite4.AddBuffer(new Buffer(Rainbow, 4 * 4, 4), 1);		//add the coloursB array to a new colours buffer 1
+		sprite5.AddBuffer(new Buffer(vertices, 4 * 3, 3), 0);		//add the vertex buffer object to a new vertex array buffer 0
+		sprite5.AddBuffer(new Buffer(yellow, 4 * 4, 4), 1);			//add the coloursB array to a new colours buffer 1
+
+
 
 		// -- setup orthographic matrix
 		Mat4x4 ortho = Mat4x4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
@@ -130,10 +189,8 @@ int main()
 
 		// -- setup light --
 		Vector2 position	= Vector2(4.0f, 1.5f);
-		float intensity		= 1.0f;
 		Vector4 colour		= Vector4(0.2f, 0.3f, 0.8f, 1.0f);
 		shader.SetUniform2float("light_position", position);
-		shader.SetUniform1float("light_intensity", intensity);
 		shader.SetUniform4float("frag_colour", colour);
 
 		while (!window.Closed())
@@ -168,19 +225,54 @@ int main()
 				window.GetMousePosition(x, y);
 				shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
 
-				// -- draw object to the screen --
-				vao.Bind();
+				// -- DRAW SPRITE 1 (RED) --
+				sprite1.Bind();
 				ibo.Bind();
+				shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(0, 0, 0)));
 				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
+				window.CheckError("Sprite1");
 				ibo.Unbind();
-				vao.Unbind();
+				sprite1.Unbind();
+				
+				// -- DRAW SPRITE 2 (GREEN) --
+				sprite2.Bind();
+				ibo.Bind();
+				shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(0, 6, 0)));
+				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
+				window.CheckError("Sprite2");
+				sprite2.Unbind();
+				ibo.Unbind();
+
+				// -- DRAW SPRITE 3 (BLUE) --
+				sprite3.Bind();
+				ibo.Bind();
+				shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(8, 6, 0)));
+				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
+				window.CheckError("Sprite3");
+				sprite2.Unbind();
+				ibo.Unbind();
+
+				// -- DRAW SPRITE 5 (YELLOw) --
+				sprite5.Bind();
+				ibo.Bind();
+				shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(8, 0, 0)));
+				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
+				window.CheckError("Sprite5");
+				sprite5.Unbind();
+				ibo.Unbind();
+
+				// -- DRAW SPRITE 4 (RAiNBOW) --
+				sprite4.Bind();
+				ibo.Bind();
+				shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(4, 3, 0)));
+				glDrawElements(GL_TRIANGLES, ibo.GetCount(), GL_UNSIGNED_SHORT, 0);
+				window.CheckError("Sprite4");
+				sprite4.Unbind();
+				ibo.Unbind();
 			}
 
 			window.Update();
 		}
-
-		//cleanup memory
-		delete vbo;
 	}
 
 	return 0;
