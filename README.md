@@ -16,6 +16,10 @@ So I decided to start again and go for the full OpenGL works.
 - GLEW
 - OpenGL
 
+## CURRENT TASK:
+##### Improve Renderer
+##### Create Batch Renderer
+
 ## TO DO:
 (subject to change & additions)
 - [x] Setup project environment
