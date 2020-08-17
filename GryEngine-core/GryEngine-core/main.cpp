@@ -7,16 +7,21 @@
 #include "src/graphics/buffers/indexBuffer.h"
 #include "src/graphics/buffers/vertexArray.h"
 
+#include "src/graphics/renderer2D.h"
+#include "src/graphics/renderable2D.h"
+#include "src/graphics/simpleRenderer2D.h"
+
 int main()
 {
 	using namespace GryEngine;
 	using namespace Graphics;
 	using namespace Maths;
 
-	bool debugMouse			= false;
-	bool debugInput			= false;
-	bool debugUseShader		= false;
-	bool debugTestBuffer	= true;
+	bool debugMouse					= false;
+	bool debugInput					= false;
+	bool debugUseShader				= false;
+	bool debugTestBuffer			= false;
+	bool debugTestSimple2DRenderer	= true;
 
 	int horizontalWindowSize	= 640;
 	int verticalWindowSize		= 480;
@@ -273,6 +278,57 @@ int main()
 
 			window.Update();
 		}
+	}
+
+	if (debugTestSimple2DRenderer)
+	{
+		// -- setup orthographic matrix
+		Mat4x4 ortho = Mat4x4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
+
+		// -- setup shader --
+		Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+		shader.Enable();
+		shader.SetUniformMat4x4("projection_matrix", ortho);
+		shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(4, 3, 0)));
+
+		// -- setup renderables --
+		Vector3 spriteOne_Position	= Maths::Vector3(6, 5, 0);
+		Vector2 spriteOne_Size		= Maths::Vector2(4, 4);
+		Vector4 spriteOne_Colour	= Maths::Vector4(1, 0, 0, 1);	//RED
+		Renderable2D spriteOne(spriteOne_Position, spriteOne_Size, spriteOne_Colour, shader);
+
+		Vector3 spriteTwo_Position = Maths::Vector3(6, 0, 0);
+		Vector2 spriteTwo_Size = Maths::Vector2(4, 4);
+		Vector4 spriteTwo_Colour = Maths::Vector4(0, 0, 1, 1);		//BLUE
+		Renderable2D spriteTwo(spriteTwo_Position, spriteTwo_Size, spriteTwo_Colour, shader);
+
+		// -- setup renderer --
+		SimpleRenderer2D renderer;
+		
+		// -- setup light --
+		Vector2 position = Vector2(4.0f, 1.5f);
+		Vector4 colour = Vector4(0.2f, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform2float("light_position", position);
+		shader.SetUniform4float("frag_colour", colour);
+
+		while (!window.Closed())
+		{
+			window.Clear();
+
+			// -- make light follow mouse --
+			double x;
+			double y;
+			window.GetMousePosition(x, y);
+			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
+
+			renderer.Submit(&spriteOne);	//submit the first sprite to the renderer
+			renderer.Submit(&spriteTwo);	//submit the second sprite to the renderer
+
+			renderer.Flush();				//go through the render queue and draw the renderables
+
+			window.Update();
+		}
+
 	}
 
 	return 0;
