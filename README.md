@@ -17,8 +17,7 @@ So I decided to start again and go for the full OpenGL works.
 - OpenGL
 
 ## CURRENT TASK:
-##### Improve Renderer
-##### Create Batch Renderer
+##### Improve Batch Renderer
 
 ## TO DO:
 (subject to change & additions)
