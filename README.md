@@ -1,10 +1,10 @@
 # GryEngine
 
-A C++ game engine developed as a hobby :)
-This project is ongoing, and it's primary purpose is C++ / Game Engine Design practice.
-Originally started as a tinker project off of github using SDL2 to try and render some 2D objects,
-but decided that if I'm going to work on an engine I may as well commit (that's a github joke lol).
-So I decided to start again and go for the full OpenGL works.
+- A C++ game engine developed as a hobby :)
+- This project is ongoing, and it's primary purpose is C++ / Game Engine Design practice.
+- Originally started as a tinker project off of github using SDL2 to try and render some 2D objects, but decided that if I'm going to work on an engine I may as well commit (that's a github joke lol).
+- So I decided to start again and go for the full OpenGL works.
+- This project is based on the Sparky! game engine series by The Cherno: https://www.youtube.com/playlist?list=PLlrATfBNZ98fqE45g3jZA_hLGUrD4bo6_
 
 ## Created in:
 - Visual Studio 2017
