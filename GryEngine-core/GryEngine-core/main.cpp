@@ -1,8 +1,12 @@
-#include "src/graphics/window.h"
 #include "src/maths/maths.h"
+
 #include "src/utils/file_utils.h"
+#include "src/utils/timer.h"
+
+#include "src/graphics/window.h"
 
 #include "src/graphics/shader/shader.h"
+
 #include "src/graphics/buffers/buffer.h"
 #include "src/graphics/buffers/indexBuffer.h"
 #include "src/graphics/buffers/vertexArray.h"
@@ -17,6 +21,7 @@
 
 #include <time.h>
 
+
 int main()
 {
 	using namespace GryEngine;
@@ -27,8 +32,8 @@ int main()
 	bool debugInput					= false;
 	bool debugUseShader				= false;
 	bool debugTestBuffer			= false;
-	bool debugTestSimple2DRenderer	= true;
-	bool debugTestBatchRenderer2D	= false;
+	bool debugTestSimple2DRenderer	= false;
+	bool debugTestBatchRenderer2D	= true;
 
 	int horizontalWindowSize	= 960;
 	int verticalWindowSize		= 540;
@@ -343,8 +348,11 @@ int main()
 		shader.SetUniform2float("light_position", position);
 		shader.SetUniform4float("frag_colour", colour);
 
+		Timer timer;											//create a performance tracking timer
+
 		while (!window.Closed())
 		{
+			timer.Reset();										//reset the performance timer
 			window.Clear();
 
 			// -- make light follow mouse --
@@ -360,9 +368,10 @@ int main()
 				renderer.Submit(sprites[i]);
 			}
 
-			renderer.Flush();				//go through the render queue and draw the renderables
+			renderer.Flush();									//go through the render queue and draw the renderables, gives performance in milliseconds
 
-			printf("sprites: %d\n", sprites.size());
+			timer.PrintElapsedMilliseconds();					//print the elapsed milliseconds
+
 			window.Update();
 		}
 
@@ -420,8 +429,12 @@ int main()
 		shader.SetUniform2float("light_position", position);
 		shader.SetUniform4float("frag_colour", colour);
 
+		Timer timer; //performance timer
+
 		while (!window.Closed())
 		{
+			timer.Reset();										//start the timer
+
 			window.Clear();
 
 			// -- make light follow mouse --
@@ -447,8 +460,9 @@ int main()
 			// -- draw the batch of sprites --
 			renderer.Flush();
 
-			printf("sprites: %d\n", sprites.size());
 			window.Update();
+
+			timer.PrintElapsedMilliseconds();					//print the elapsed milliseconds
 		}
 	}
 
