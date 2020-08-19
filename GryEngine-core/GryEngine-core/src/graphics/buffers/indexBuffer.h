@@ -13,6 +13,7 @@ namespace GryEngine {
 
 		public:
 			IndexBuffer(GLushort* data, GLsizei count);
+			~IndexBuffer();
 
 			void Bind() const;
 			void Unbind() const;

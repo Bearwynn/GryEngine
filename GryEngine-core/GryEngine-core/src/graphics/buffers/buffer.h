@@ -13,6 +13,7 @@ namespace GryEngine {
 
 		public:
 			Buffer(GLfloat* data, GLsizei count, GLuint componentCount);
+			~Buffer();
 
 			void Bind() const;
 			void Unbind() const;

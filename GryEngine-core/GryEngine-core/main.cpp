@@ -7,9 +7,15 @@
 #include "src/graphics/buffers/indexBuffer.h"
 #include "src/graphics/buffers/vertexArray.h"
 
-#include "src/graphics/renderer2D.h"
-#include "src/graphics/renderable2D.h"
-#include "src/graphics/simpleRenderer2D.h"
+#include "src/graphics/renderer/renderer2D.h"
+#include "src/graphics/renderer/simpleRenderer2D.h"
+#include "src/graphics/renderer/batchRenderer2D.h"
+
+#include "src/graphics/renderables/renderable2D.h"
+#include "src/graphics/renderables/sprite.h"
+#include "src/graphics/renderables/static_sprite.h"
+
+#include <time.h>
 
 int main()
 {
@@ -22,9 +28,10 @@ int main()
 	bool debugUseShader				= false;
 	bool debugTestBuffer			= false;
 	bool debugTestSimple2DRenderer	= true;
+	bool debugTestBatchRenderer2D	= false;
 
-	int horizontalWindowSize	= 640;
-	int verticalWindowSize		= 480;
+	int horizontalWindowSize	= 960;
+	int verticalWindowSize		= 540;
 
 	Window window("GryEngine", horizontalWindowSize, verticalWindowSize);	//create a new window
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);									//define the default colour for GL window
@@ -291,16 +298,41 @@ int main()
 		shader.SetUniformMat4x4("projection_matrix", ortho);
 		shader.SetUniformMat4x4("model_matrix", Mat4x4::translation(Vector3(4, 3, 0)));
 
-		// -- setup renderables --
-		Vector3 spriteOne_Position	= Maths::Vector3(6, 5, 0);
-		Vector2 spriteOne_Size		= Maths::Vector2(4, 4);
-		Vector4 spriteOne_Colour	= Maths::Vector4(1, 0, 0, 1);	//RED
-		Renderable2D spriteOne(spriteOne_Position, spriteOne_Size, spriteOne_Colour, shader);
 
-		Vector3 spriteTwo_Position = Maths::Vector3(6, 0, 0);
-		Vector2 spriteTwo_Size = Maths::Vector2(4, 4);
-		Vector4 spriteTwo_Colour = Maths::Vector4(0, 0, 1, 1);		//BLUE
-		Renderable2D spriteTwo(spriteTwo_Position, spriteTwo_Size, spriteTwo_Colour, shader);
+
+		// -- setup renderables --
+		std::vector<Renderable2D*> sprites;
+		srand(time(NULL));
+
+		//Vector2 spriteOne_Position = Vector2(6, 5);
+		//Vector2 spriteOne_Size = Vector2(4, 4);
+		//Vector4 spriteOne_Colour = Vector4(1, 0, 0, 1);		//RED
+		//StaticSprite spriteOne(spriteOne_Position.x, spriteOne_Position.y,
+		//	spriteOne_Size.x, spriteOne_Size.y,
+		//	spriteOne_Colour,
+		//	shader);
+
+		//Vector2 spriteTwo_Position = Vector2(6, 0);
+		//Vector2 spriteTwo_Size = Vector2(4, 4);
+		//Vector4 spriteTwo_Colour = Vector4(0, 0, 1, 1);		//BLUE
+		//StaticSprite spriteTwo(spriteTwo_Position.x, spriteTwo_Position.y,
+		//	spriteTwo_Size.x, spriteTwo_Size.y,
+		//	spriteTwo_Colour,
+		//	shader);
+
+		// -- generate random coloured renderables --
+		for (float y = 0; y < 9.0f; y += 0.1f)
+		{
+			for (float x = 0; x < 16.0f; x += 0.1f)
+			{
+				float size		= 0.1f;
+				float red		= rand() % 1000 / 1000.0f;
+				float green		= rand() % 1000 / 1000.0f;
+				float blue		= rand() % 1000 / 1000.0f;
+				Vector4 colour	= Vector4(red, green, blue, 1.0f);
+				sprites.push_back(new StaticSprite(x, y, size, size, colour, shader));
+			}
+		}
 
 		// -- setup renderer --
 		SimpleRenderer2D renderer;
@@ -321,14 +353,103 @@ int main()
 			window.GetMousePosition(x, y);
 			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
 
-			renderer.Submit(&spriteOne);	//submit the first sprite to the renderer
-			renderer.Submit(&spriteTwo);	//submit the second sprite to the renderer
+			//renderer.Submit(&spriteOne);	//submit the first sprite to the renderer
+			//renderer.Submit(&spriteTwo);	//submit the second sprite to the renderer
+			for (int i = 0; i < sprites.size(); i++)
+			{
+				renderer.Submit(sprites[i]);
+			}
 
 			renderer.Flush();				//go through the render queue and draw the renderables
 
+			printf("sprites: %d\n", sprites.size());
 			window.Update();
 		}
 
+	}
+
+	if (debugTestBatchRenderer2D)
+	{
+		// -- setup orthographic matrix
+		Mat4x4 ortho = Mat4x4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
+
+		// -- setup shader --
+		Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+		shader.Enable();
+		shader.SetUniformMat4x4("projection_matrix", ortho);
+
+		// -- setup renderables --
+
+		std::vector<Renderable2D*> sprites;
+		srand(time(NULL));
+
+		//Vector2 spriteOne_Position	= Vector2(6, 0);
+		//Vector2 spriteOne_Size		= Vector2(4, 4);
+		//Vector4 spriteOne_Colour	= Vector4(1, 0, 0, 1);				//RED
+		//Sprite spriteOne(spriteOne_Position.x, spriteOne_Position.y,	//position
+		//				spriteOne_Size.x, spriteOne_Size.y,				//size
+		//				spriteOne_Colour);								//colour
+
+		//Vector2 spriteTwo_Position	= Vector2(6, 5);
+		//Vector2 spriteTwo_Size		= Vector2(4, 4);
+		//Vector4 spriteTwo_Colour	= Vector4(0, 0, 1, 1);				//BLUE
+		//Sprite spriteTwo(spriteTwo_Position.x, spriteTwo_Position.y,	//position
+		//				spriteTwo_Size.x, spriteTwo_Size.y,				//size
+		//				spriteTwo_Colour);								//colour
+
+		// -- generate random coloured renderables --
+		for (float y = 0; y < 9.0f; y += 0.1f)
+		{
+			for (float x = 0; x < 16.0f; x += 0.1f)
+			{
+				float size		= 0.1f;
+				float red		= rand() % 1000 / 1000.0f;
+				float green		= rand() % 1000 / 1000.0f;
+				float blue		= rand() % 1000 / 1000.0f;
+				Vector4 colour	= Vector4(red, green, blue, 1.0f);
+				sprites.push_back(new Sprite(x, y, size, size, colour));
+			}
+		}
+
+		// -- setup renderer --
+		BatchRenderer2D renderer;
+
+		// -- setup light --
+		Vector2 position			= Vector2(4.0f, 1.5f);
+		Vector4 colour				= Vector4(0.2f, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform2float("light_position", position);
+		shader.SetUniform4float("frag_colour", colour);
+
+		while (!window.Closed())
+		{
+			window.Clear();
+
+			// -- make light follow mouse --
+			double x;
+			double y;
+			window.GetMousePosition(x, y);
+			shader.SetUniform2float("light_position", Vector2((float)(x * 16.0f / (float)horizontalWindowSize), (float)(9.0f - y * 9.0f / (float)verticalWindowSize)));
+
+			// -- map the buffer --
+			renderer.Begin();
+
+			// -- submit sprites to be drawn --
+			//renderer.Submit(&spriteOne);	//submit the first sprite to the renderer
+			//renderer.Submit(&spriteTwo);	//submit the second sprite to the renderer
+			for (int i = 0; i < sprites.size(); i++)
+			{
+				renderer.Submit(sprites[i]);
+			}
+			
+			// -- unmap the buffer --
+			renderer.End();
+
+			// -- draw the batch of sprites --
+			renderer.Flush();
+
+			printf("sprites: %d\n", sprites.size());
+			window.Update();
+		}
 	}
 
 	return 0;

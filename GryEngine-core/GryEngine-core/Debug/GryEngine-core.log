@@ -1,3 +1,7 @@
 ﻿  main.cpp
 d:\gryengine - github\gryengine\gryengine-core\gryengine-core\src\maths\maths.h(14): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\gryengine - github\gryengine\gryengine-core\gryengine-core\main.cpp(305): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\gryengine - github\gryengine\gryengine-core\gryengine-core\main.cpp(358): warning C4018: '<': signed/unsigned mismatch
+d:\gryengine - github\gryengine\gryengine-core\gryengine-core\main.cpp(384): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\gryengine - github\gryengine\gryengine-core\gryengine-core\main.cpp(439): warning C4018: '<': signed/unsigned mismatch
   GryEngine-core.vcxproj -> D:\GryEngine - GitHub\GryEngine\GryEngine-core\Debug\GryEngine-core.exe

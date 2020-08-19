@@ -22,6 +22,11 @@ namespace GryEngine {
 			glBindBuffer(GL_ARRAY_BUFFER, 0);			//unbind everything
 		}
 
+		Buffer::~Buffer()
+		{
+			glDeleteBuffers(1, &m_BufferID);
+		}
+
 		void Buffer::Bind() const
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);	//bind an array of data to bufferID
